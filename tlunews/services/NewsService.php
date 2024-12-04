@@ -67,6 +67,29 @@ class NewsService
         return $news;
     }
 
-   
+    public function addNews($news)
+    {
+        $query = "INSERT INTO news (title, content, image, created_at, category_id ) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $this->db->getConnection()->prepare($query);
+        $stmt->bind_param("ssssi", $news->getTitle(), $news->getContent(), $news->getImage(), $news->getCreatedAt(), $news->getCategoryId());
+        return $stmt->execute();
+    }
+
+    public function deleteNews($id)
+    {
+        $query = "DELETE FROM news WHERE id = ?";
+        $stmt = $this->db->getConnection()->prepare($query);
+        $stmt->bind_param("i", $id);
+        return $stmt->execute();
+    }
+
+    public function updateNews($news)
+    {
+        $query = "UPDATE news SET title = ?, content = ?, image = ?, created_at = ?, category_id = ? WHERE id = ?";
+        $stmt = $this->db->getConnection()->prepare($query);
+
+        $stmt->bind_param("ssssii", $news->getTitle(), $news->getContent(), $news->getImage(), $news->getCreatedAt(), $news->getCategoryId(), $news->getId());
+        return $stmt->execute();
+    }
 }
 ?>
