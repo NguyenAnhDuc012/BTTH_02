@@ -15,6 +15,16 @@
 
         <h2 class="mb-4">Update News</h2>
 
+        <?php if (!empty($errorMessages)): ?>
+            <div class="alert alert-danger">
+                <ul>
+                    <?php foreach ($errorMessages as $error): ?>
+                        <li><?= htmlspecialchars($error) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+
         <form action="index.php?controller=admin&action=edit&id=<?= $news->getId(); ?>" method="POST" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>

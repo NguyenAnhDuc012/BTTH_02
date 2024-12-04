@@ -100,7 +100,7 @@ class AdminController
                     header("Location: index.php?controller=admin&action=index&success=true");
                     exit();
                 } else {
-                    $errorMessages[] = "Error adding product!";
+                    $errorMessages[] = "Error adding news!";
                 }
             }
         }
@@ -138,6 +138,8 @@ class AdminController
         $news = $this->newsService->getNewsById($id);
         $currentImage = $news->getImage();
 
+        $errorMessages = [];
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $news->setTitle($_POST['title']);
             $news->setContent($_POST['content']);
@@ -159,7 +161,7 @@ class AdminController
                     header("Location: index.php?controller=admin&action=index&success=true");
                     exit();
                 } else {
-                    $errorMessages[] = "Error updating product!";
+                    $errorMessages[] = "Error updating news!";
                 }
             }
         }
