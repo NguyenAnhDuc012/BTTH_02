@@ -44,6 +44,29 @@ class NewsService
         return null;
     }
 
+    public function searchNews($keyword)
+    {
+        if (empty($keyword)) {
+            $query = "SELECT * FROM news";
+            $stmt = $this->db->getConnection()->prepare($query);
+        } else {
+            $query = "SELECT * FROM news WHERE title LIKE ? OR content LIKE ?";
+            $stmt = $this->db->getConnection()->prepare($query);
+
+            $searchTerm = "%" . $keyword . "%";
+            $stmt->bind_param("ss", $searchTerm, $searchTerm);
+        }
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $news = [];
+        while ($row = $result->fetch_assoc()) {
+            $news[] = new News($row['id'], $row['title'], $row['content'], $row['image'], $row['created_at'], $row['category_id']);
+        }
+
+        return $news;
+    }
+
     public function addNews($news)
     {
         $query = "INSERT INTO news (title, content, image, created_at, category_id ) VALUES (?, ?, ?, ?, ?)";
